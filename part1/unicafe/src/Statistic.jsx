@@ -1,4 +1,11 @@
 const Statistic = ({good, bad, total}) => {
+
+    if (total === 0) {
+        return (
+            <h4>No feedback given</h4>
+        )
+    }
+
 	return (
 		<>
 			<p>total {total}</p>
