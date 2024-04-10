@@ -1,3 +1,4 @@
+import Statistic from './Statistic'
 import { useState } from 'react'
 
 const App = () => {
@@ -19,9 +20,7 @@ const App = () => {
     <p>neutral {neutral}</p>
     <p>bad {bad}</p>
 
-    <p>total {total}</p>
-    <p>average {(good - bad) / total}%</p>
-    <p>positive {good / total * 100}%</p>
+    <Statistic good={good} bad={bad} total={total} />
     </>
   )
 }
