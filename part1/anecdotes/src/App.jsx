@@ -21,16 +21,25 @@ const App = () => {
     setSelected(randomNumber)
   }
 
-  
-  
+  const handleClickVote = () => {
+    const copy = { ...votes, [selected]: votes[selected] + 1}
+    setVotes(copy)
+  }
+
+  const votesArray = Object.values(votes)
+  const mostVotes = Math.max(...votesArray)
+  const indexOfMostVotes = votesArray.indexOf(mostVotes)
 
 return (
     <div>
       <h2>Anecdote of the day!</h2>
+      <button onClick={handleClickVote}>vote</button>
       <button onClick={handleClickGenerate}>next anecdote</button>
       <p>{anecdotes[selected]}</p>
       <p>{votes[selected]}</p>
 
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[indexOfMostVotes]}</p>
      
       </div>
   )
