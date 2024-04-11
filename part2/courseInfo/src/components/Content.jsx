@@ -2,6 +2,7 @@ import Part from "./Part"
 
 const Content = ({parts}) => {
 	
+	// We sum the exercises of each part to get the total number of exercises
 	const total = parts.reduce((sum, part) => sum + part.exercises, 0)
 
 	return (
