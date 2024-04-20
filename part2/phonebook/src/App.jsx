@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
-import axios from 'axios'
 import personService from './services/persons'
 
 const App = () => {
@@ -25,6 +24,8 @@ const App = () => {
 	}
 	const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(inputSearch))
 
+
+
 	const addPerson = event => {
 		event.preventDefault()
 
@@ -36,7 +37,7 @@ const App = () => {
 		const personObject = {
 			name: newName,
 			number: newNumber,
-			id: Math.floor(Math.random() * 1000),
+			id: Math.floor(Math.random() * 1000).toString()
 		}
 
 		personService.create(personObject).then(returnedPerson => {
@@ -66,7 +67,7 @@ const App = () => {
 				newName={newName}
 				newNumber={newNumber}
 			/>
-			<Persons filteredPersons={filteredPersons} />
+			<Persons filteredPersons={filteredPersons} setPersons={setPersons} persons={persons} />
 		</div>
 	)
 }

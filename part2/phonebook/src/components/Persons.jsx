@@ -1,13 +1,22 @@
 import React from 'react'
+import personService from '../services/persons'
 
-const Persons = ({filteredPersons}) => {
+const Persons = ({ filteredPersons, setPersons, persons }) => {
+	const deletePerson = id => {
+		personService.remove(id)
+		setPersons(persons.filter(person => person.id !== id))
+	}
+
 	return (
 		<>
 			<h2>Numbers</h2>
 			{filteredPersons.map(person => (
-				<p key={person.id}>
-					{person.name} {person.number}
-				</p>
+				<div key={person.id}>
+					<p>
+						{person.name} {person.number}
+					</p>
+					<button onClick={() => deletePerson(person.id)}>delete</button>
+				</div>
 			))}
 		</>
 	)
