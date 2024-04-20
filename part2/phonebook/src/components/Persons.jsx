@@ -3,6 +3,10 @@ import personService from '../services/persons'
 
 const Persons = ({ filteredPersons, setPersons, persons }) => {
 	const deletePerson = id => {
+		if (window.confirm('Do you really want to delete this person?') === false) {
+			return
+		}
+
 		personService.remove(id)
 		setPersons(persons.filter(person => person.id !== id))
 	}
