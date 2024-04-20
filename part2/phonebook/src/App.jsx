@@ -27,13 +27,27 @@ const App = () => {
 
 
 	const addPerson = event => {
-		event.preventDefault()
-
+		
 		if (persons.find(person => person.name === newName)) {
 			alert(`${newName} is already added to phonebook`)
 			return
 		}
-
+		
+		if (persons.find(person => person.number === newNumber)) {
+			if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`) === true) {
+				const person = persons.find(person => person.number === newNumber)
+				personService.update(person.id, { ...person, name: newName})
+				.then(returnedPerson => {
+					setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
+					setNewName('')
+					setNewNumber('')
+				})
+			}
+			return
+		}
+		
+		event.preventDefault()
+		
 		const personObject = {
 			name: newName,
 			number: newNumber,
