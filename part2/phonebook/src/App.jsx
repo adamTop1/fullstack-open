@@ -3,30 +3,28 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import axios from 'axios'
-
+import personService from './services/persons'
 
 const App = () => {
 	const [persons, setPersons] = useState([])
 	const [newName, setNewName] = useState('')
 	const [newNumber, setNewNumber] = useState('')
-	const [inputSearch, setInputSearch] = useState('');
-	
+	const [inputSearch, setInputSearch] = useState('')
+
 	useEffect(() => {
-		axios.get('http://localhost:3001/persons').then(response => {
-		const persons = response.data
-		setPersons(persons)
-	  })
+		personService.getAll().then(persons => {
+			setPersons(persons)
+		})
 	}, [])
 
-
-	const searchPerson = (event) => {
+	const searchPerson = event => {
 		if (event.target.value === '' || event.target.value === null) {
 			return setInputSearch('')
 		}
 		setInputSearch(event.target.value)
 	}
 	const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(inputSearch))
-	
+
 	const addPerson = event => {
 		event.preventDefault()
 
@@ -40,13 +38,12 @@ const App = () => {
 			number: newNumber,
 			id: Math.floor(Math.random() * 1000),
 		}
-		
-		axios.post('http://localhost:3001/persons', personObject).then(response => {
-			console.log(response)
-		})
-		setPersons(persons.concat(personObject))
-		setNewName('')
 
+		personService.create(personObject).then(returnedPerson => {
+		setPersons(persons.concat(returnedPerson))
+		setNewName('')
+		setNewNumber('')
+		})
 	}
 
 	const handleChangeName = event => {
@@ -62,7 +59,13 @@ const App = () => {
 	return (
 		<div>
 			<Filter searchPerson={searchPerson} />
-			<PersonForm addPerson={addPerson} handleChangeName={handleChangeName} handleChangeNumber={handleChangeNumber} />
+			<PersonForm
+				addPerson={addPerson}
+				handleChangeName={handleChangeName}
+				handleChangeNumber={handleChangeNumber}
+				newName={newName}
+				newNumber={newNumber}
+			/>
 			<Persons filteredPersons={filteredPersons} />
 		</div>
 	)
