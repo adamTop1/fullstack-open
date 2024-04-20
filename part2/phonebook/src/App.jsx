@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
@@ -11,10 +11,12 @@ const App = () => {
 	const [newNumber, setNewNumber] = useState('')
 	const [inputSearch, setInputSearch] = useState('');
 	
-	axios.get('http://localhost:3001/persons').then(response => {
+	useEffect(() => {
+		axios.get('http://localhost:3001/persons').then(response => {
 		const persons = response.data
 		setPersons(persons)
 	  })
+	}, [])
 
 
 	const searchPerson = (event) => {
@@ -38,8 +40,13 @@ const App = () => {
 			number: newNumber,
 			id: Math.floor(Math.random() * 1000),
 		}
-
+		
+		axios.post('http://localhost:3001/persons', personObject).then(response => {
+			console.log(response)
+		})
 		setPersons(persons.concat(personObject))
+		setNewName('')
+
 	}
 
 	const handleChangeName = event => {
