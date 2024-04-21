@@ -24,7 +24,7 @@ const App = () => {
 	return (
 		<div>
 			<h2>PhoneBook</h2>
-			<Notification message={errorMessage} />
+			<Notification message={errorMessage}/>
 			<Filter setInputSearch={setInputSearch} />
 			<PersonForm
 				persons={persons}
