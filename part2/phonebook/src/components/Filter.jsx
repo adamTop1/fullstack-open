@@ -1,9 +1,16 @@
 import React from 'react'
 
-const Filter = ({searchPerson}) => {
+const Filter = ({setInputSearch}) => {
+
+	const searchPerson = event => {
+		if (event.target.value === '' || event.target.value === null) {
+			return setInputSearch('')
+		}
+		setInputSearch(event.target.value)
+	}
+
 	return (
 		<>
-			<h2>Phonebook</h2>
 			<p>filter shown with</p>
 			<input type='text' onChange={searchPerson} />
 		</>
