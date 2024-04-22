@@ -14,7 +14,6 @@ const App = () => {
 	const filteredCountries = countries.filter(country =>
 		country.name.common.toLowerCase().includes(search.toLowerCase())
 	)
-	console.log(filteredCountries)
 
 	const searchCountry = event => {
 		event.preventDefault()
@@ -22,6 +21,10 @@ const App = () => {
 	}
 
 	let content
+
+	const showAllInfo = name => {
+		setSearch(name)
+	}
 
 	if (filteredCountries.length === 1) {
 		content = filteredCountries.map(country => (
@@ -39,7 +42,14 @@ const App = () => {
 	} else if (filteredCountries.length > 10) {
 		content = <p>Too many matches, specify another filter</p>
 	} else if (filteredCountries.length <= 10 && filteredCountries.length > 1) {
-		content = filteredCountries.map(country => <p key={country.name.common}>{country.name.common}</p>)
+		content = filteredCountries.map(country => (
+			<div key={country.name.common}>
+				<p>
+					{country.name.common}
+					<button onClick={() => showAllInfo(country.name.common)}>show</button>
+				</p>
+			</div>
+		))
 	} else {
 		content = <p>No matches, specify another filter</p>
 	}
