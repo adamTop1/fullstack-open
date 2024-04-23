@@ -48,6 +48,17 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end()
 })
 
+app.post('/api/persons', (req, res) => {
+ const body = req.body
+ const personObj = {
+    id: Math.floor(Math.random() * 1000),
+    name: body.name,
+    number: body.number
+  }
+  persons = persons.concat(personObj)
+  res.json(personObj.name + ' added to phonebook')
+})
+
 app.get('/info', (req, res) => {
     const date = new Date()
     res.send(`<p>Phonebook has info for ${persons.length} people</p><br/><p>${date}</p>`)
