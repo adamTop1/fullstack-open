@@ -28,7 +28,12 @@ let persons = [
 const PORT = 3001
 
 app.use(express.json())
-app.use(morgan('tiny'))
+
+morgan.token('body', function (req, res) {
+	return JSON.stringify(req.body)
+})
+app.use(morgan(':method :url :status - :response-time ms :body'))
+
 
 app.get('/api/persons', (req, res) => {
 	res.json(persons)
@@ -61,14 +66,14 @@ app.post('/api/persons', (req, res) => {
 			error: 'name must be unique',
 		})
 	} else {
-    const personObj = {
-      id: Math.floor(Math.random() * 1000),
-      name: body.name,
-      number: body.number,
-    }
-    persons = persons.concat(personObj)
-    res.json(personObj.name + ' added to phonebook')
-  }
+		const personObj = {
+			id: Math.floor(Math.random() * 1000),
+			name: body.name,
+			number: body.number,
+		}
+		persons = persons.concat(personObj)
+		res.json(personObj.name + ' added to phonebook')
+	}
 })
 
 app.get('/info', (req, res) => {
