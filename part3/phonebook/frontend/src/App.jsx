@@ -20,7 +20,6 @@ const App = () => {
 
 	const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(inputSearch))
 
-
 	return (
 		<div>
 			<h2>PhoneBook</h2>

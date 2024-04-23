@@ -73,7 +73,7 @@ app.post('/api/persons', (req, res) => {
 			number: body.number,
 		}
 		persons = persons.concat(personObj)
-		res.json(personObj.name + ' added to phonebook')
+		res.json(personObj)
 	}
 })
 
