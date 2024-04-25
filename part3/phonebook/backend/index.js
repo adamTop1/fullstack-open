@@ -25,7 +25,7 @@ app.get('/api/persons', (req, res) => {
 app.get('/api/persons/:id', (req, res) => {
 	const id = req.params.id
 	Person.findById(id).then(person => {
-		if (person) {
+		if(person) {
 			res.json(person)
 		} else {
 			res.status(404).end()
@@ -40,26 +40,22 @@ app.delete('/api/persons/:id', (req, res) => {
 	})
 })
 
-// app.post('/api/persons', (req, res) => {
-// 	const body = req.body
-// 	if (!body.name || !body.number) {
-// 		return res.status(400).json({
-// 			error: 'name or number missing',
-// 		})
-// 	} else if (Person.findOne({ name: body.name })) {
-// 		return res.status(400).json({
-// 			error: 'name must be unique',
-// 		})
-// 	} else {
-// 		const personObj = {
-// 			name: body.name,
-// 			number: body.number,
-// 		}
-// 		Person.create(personObj).then(person => {
-// 			res.json(person)
-// 		})
-// 	}
-// })
+app.post('/api/persons', (req, res) => {
+	const body = req.body
+	if (!body.name || !body.number) {
+		return res.status(400).json({
+			error: 'name or number missing',
+		})
+	} else {
+		const personObj = {
+			name: body.name,
+			number: body.number,
+		}
+		Person.create(personObj).then(person => {
+			res.json(person)
+		})
+	}
+})
 
 app.get('/info', (req, res) => {
 	const date = new Date()
