@@ -16,12 +16,13 @@ morgan.token('body', function (req, res) {
 })
 app.use(morgan(':method :url :status - :response-time ms :body'))
 
+// Get all
 app.get('/api/persons', (req, res) => {
 	Person.find({}).then(persons => {
 		res.json(persons)
 	})
 })
-
+// Get one
 app.get('/api/persons/:id', (req, res) => {
 	const id = req.params.id
 	Person.findById(id).then(person => {
@@ -33,6 +34,7 @@ app.get('/api/persons/:id', (req, res) => {
 	})
 })
 
+// Delete
 app.delete('/api/persons/:id', (req, res) => {
 	const id = req.params.id
 	Person.findByIdAndDelete(id).then(() => {
@@ -40,6 +42,7 @@ app.delete('/api/persons/:id', (req, res) => {
 	})
 })
 
+// Update
 app.post('/api/persons', (req, res) => {
 	const body = req.body
 	if (!body.name || !body.number) {
@@ -61,6 +64,7 @@ app.get('/info', (req, res) => {
 	const date = new Date()
 	res.send(`<p>Phonebook has info for ${persons.length} people</p><br/><p>${date}</p>`)
 })
+
 
 app.listen(PORT, () => {
 	console.log('Server running on port', PORT)
