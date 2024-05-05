@@ -18,27 +18,43 @@ app.use(morgan(':method :url :status - :response-time ms :body'))
 
 // Get all
 app.get('/api/persons', (req, res) => {
-	Person.find({}).then(persons => {
-		res.json(persons)
-	})
+	Person.find({})
+		.then(persons => {
+			res.json(persons)
+		})
+		.catch(error => {
+			console.log(error)
+			response.status(500).end()
+		})
 })
 // Get one
 app.get('/api/persons/:id', (req, res) => {
 	const id = req.params.id
-	Person.findById(id).then(person => {
-		if(person) {
-			res.json(person)
-		} else {
-			res.status(404).end()
-		}
-	})
+	Person.findById(id)
+		.then(person => {
+			if (person) {
+				res.json(person)
+			} else {
+				res.status(404).end()
+			}
+		})
+		.catch(error => {
+			console.log(error)
+			response.status(500).end()
+		})
 })
 
 // Delete
 app.delete('/api/persons/:id', (req, res) => {
 	const id = req.params.id
 	Person.findByIdAndDelete(id).then(() => {
-		res.status(204).end()
+		res
+			.status(204)
+			.end()
+			.catch(error => {
+				console.log(error)
+				response.status(500).end()
+			})
 	})
 })
 
@@ -54,9 +70,14 @@ app.post('/api/persons', (req, res) => {
 			name: body.name,
 			number: body.number,
 		}
-		Person.create(personObj).then(person => {
-			res.json(person)
-		})
+		Person.create(personObj)
+			.then(person => {
+				res.json(person)
+			})
+			.catch(error => {
+				console.log(error)
+				response.status(500).end()
+			})
 	}
 })
 
@@ -64,7 +85,6 @@ app.get('/info', (req, res) => {
 	const date = new Date()
 	res.send(`<p>Phonebook has info for ${persons.length} people</p><br/><p>${date}</p>`)
 })
-
 
 app.listen(PORT, () => {
 	console.log('Server running on port', PORT)
