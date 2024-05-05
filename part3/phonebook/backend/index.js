@@ -22,40 +22,28 @@ app.get('/api/persons', (req, res) => {
 		.then(persons => {
 			res.json(persons)
 		})
-		.catch(error => {
-			console.log(error)
-			response.status(500).end()
-		})
+		.catch(error => next(error))
 })
 // Get one
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
 	const id = req.params.id
 	Person.findById(id)
 		.then(person => {
 			if (person) {
 				res.json(person)
-			} else {
-				res.status(404).end()
 			}
 		})
-		.catch(error => {
-			console.log(error)
-			response.status(500).end()
-		})
+		.catch(error => next(error))
 })
 
 // Delete
 app.delete('/api/persons/:id', (req, res) => {
 	const id = req.params.id
-	Person.findByIdAndDelete(id).then(() => {
-		res
-			.status(204)
-			.end()
-			.catch(error => {
-				console.log(error)
-				response.status(500).end()
-			})
-	})
+	Person.findByIdAndDelete(id)
+		.then(() => {
+			res.status(204).end()
+		})
+		.catch(error => next(error))
 })
 
 // Update
@@ -74,10 +62,7 @@ app.post('/api/persons', (req, res) => {
 			.then(person => {
 				res.json(person)
 			})
-			.catch(error => {
-				console.log(error)
-				response.status(500).end()
-			})
+			.catch(error => next(error))
 	}
 })
 
@@ -85,6 +70,19 @@ app.get('/info', (req, res) => {
 	const date = new Date()
 	res.send(`<p>Phonebook has info for ${persons.length} people</p><br/><p>${date}</p>`)
 })
+
+const unknownEndpoint = (req, res) => {
+	res.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, req, res, next) => {
+	console.error(error.message)
+	res.status(500).send('Something broke!')
+}
+
+app.use(errorHandler)
 
 app.listen(PORT, () => {
 	console.log('Server running on port', PORT)
