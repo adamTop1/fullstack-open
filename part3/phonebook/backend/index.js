@@ -46,7 +46,7 @@ app.delete('/api/persons/:id', (req, res) => {
 		.catch(error => next(error))
 })
 
-// Update
+// Create
 app.post('/api/persons', (req, res) => {
 	const body = req.body
 	if (!body.name || !body.number) {
@@ -64,6 +64,23 @@ app.post('/api/persons', (req, res) => {
 			})
 			.catch(error => next(error))
 	}
+})
+
+// Update
+app.put('/api/persons/:id', (req, res, next) => {
+	const body = req.body
+	const person = {
+		name: body.name,
+		number: body.number,
+		id: body.id,
+	}
+
+	Person.findByIdAndUpdate(req.params.id, person, { new: true, runValidators: true, context: 'query' })
+		.then(updatedPerson => {
+			console.log(updatedPerson);
+			res.json(updatedPerson)
+		})
+		.catch(error => next(error))
 })
 
 app.get('/info', (req, res) => {

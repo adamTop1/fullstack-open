@@ -1,9 +1,7 @@
 import React from 'react'
 import personService from '../services/persons'
 
-const PersonForm = ({ newName, newNumber, setNewName, setNewNumber, persons, setPersons, setErrorMessage, setIsGoodMessage }) => {
-
-	
+const PersonForm = ({ newName, newNumber, setNewName, setNewNumber, persons, setPersons, setErrorMessage }) => {
 	const handleChangeName = event => {
 		event.preventDefault()
 		setNewName(event.target.value)
@@ -18,26 +16,34 @@ const PersonForm = ({ newName, newNumber, setNewName, setNewNumber, persons, set
 		event.preventDefault()
 
 		if (persons.find(person => person.name === newName)) {
-			alert(`${newName} is already added to phonebook`)
-			return
-		}
-
-		if (persons.find(person => person.number === newNumber)) {
 			if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`) === true) {
-				const person = persons.find(person => person.number === newNumber)
-				personService.update(person.id, { ...person, name: newName })
-				.then(returnedPerson => {
-					console.log('updated person', returnedPerson);
-					setPersons(persons.map(person => (person.id !== returnedPerson.id ? person : returnedPerson)))
-					setNewName('')
-					setNewNumber('')
-				})
-				.catch(error => {
-					setErrorMessage(`Information of ${newName} has already been removed from server`)
-					setTimeout(() => {
-						setErrorMessage(null)
-					}, 5000)
-				})
+				const person = persons.find(person => person.name === newName)
+				personService
+					.update(person.id, { ...person, number: newNumber })
+					.then(returnedPerson => {
+						setNewName('')
+						setNewNumber('')
+
+						const updatedPersons = persons.map(person =>
+							person.id !== returnedPerson.data.id ? person : returnedPerson.data
+						)
+						setPersons(updatedPersons)
+
+						setErrorMessage(`Successfully updated ${returnedPerson.data.name}'s number`)
+						setTimeout(() => {
+							setErrorMessage(null)
+						}, 5000)
+
+						return
+					})
+
+					.catch(error => {
+						console.log('error', error)
+						setErrorMessage(`Information of ${newName} has already been removed from server`)
+						setTimeout(() => {
+							setErrorMessage(null)
+						}, 5000)
+					})
 			}
 			return
 		}
