@@ -33,13 +33,13 @@ const PersonForm = ({ newName, newNumber, setNewName, setNewNumber, persons, set
 						setTimeout(() => {
 							setErrorMessage(null)
 						}, 5000)
-
 						return
 					})
-
 					.catch(error => {
-						console.log('error', error)
-						setErrorMessage(`Information of ${newName} has already been removed from server`)
+						setNewName('')
+						setNewNumber('')
+						setErrorMessage(null)
+						setErrorMessage(error.response.data.error)
 						setTimeout(() => {
 							setErrorMessage(null)
 						}, 5000)
@@ -54,15 +54,26 @@ const PersonForm = ({ newName, newNumber, setNewName, setNewNumber, persons, set
 			id: Math.floor(Math.random() * 1000).toString(),
 		}
 
-		personService.create(personObject).then(returnedPerson => {
-			setPersons(persons.concat(returnedPerson))
-			setNewName('')
-			setNewNumber('')
-			setErrorMessage(`Successfully added ${personObject.name} to phonebook`)
-			setTimeout(() => {
+		personService
+			.create(personObject)
+			.then(returnedPerson => {
+				setPersons(persons.concat(returnedPerson))
+				setNewName('')
+				setNewNumber('')
 				setErrorMessage(null)
-			}, 5000)
-		})
+				setErrorMessage(`Successfully added ${personObject.name} to phonebook`)
+				setTimeout(() => {
+					setErrorMessage(null)
+				}, 5000)
+			})
+			.catch(error => {
+				setNewName('')
+				setNewNumber('')
+				setErrorMessage(error.response.data.error)
+				setTimeout(() => {
+					setErrorMessage(null)
+				}, 5000)
+			})
 	}
 
 	return (
