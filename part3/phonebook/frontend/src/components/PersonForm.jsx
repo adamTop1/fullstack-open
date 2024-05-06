@@ -45,35 +45,34 @@ const PersonForm = ({ newName, newNumber, setNewName, setNewNumber, persons, set
 						}, 5000)
 					})
 			}
-			return
-		}
+		} else {
+			const personObject = {
+				name: newName,
+				number: newNumber,
+				id: Math.floor(Math.random() * 1000).toString(),
+			}
 
-		const personObject = {
-			name: newName,
-			number: newNumber,
-			id: Math.floor(Math.random() * 1000).toString(),
+			personService
+				.create(personObject)
+				.then(returnedPerson => {
+					setPersons(persons.concat(returnedPerson))
+					setNewName('')
+					setNewNumber('')
+					setErrorMessage(null)
+					setErrorMessage(`Successfully added ${personObject.name} to phonebook`)
+					setTimeout(() => {
+						setErrorMessage(null)
+					}, 5000)
+				})
+				.catch(error => {
+					setNewName('')
+					setNewNumber('')
+					setErrorMessage(error.response.data.error)
+					setTimeout(() => {
+						setErrorMessage(null)
+					}, 5000)
+				})
 		}
-
-		personService
-			.create(personObject)
-			.then(returnedPerson => {
-				setPersons(persons.concat(returnedPerson))
-				setNewName('')
-				setNewNumber('')
-				setErrorMessage(null)
-				setErrorMessage(`Successfully added ${personObject.name} to phonebook`)
-				setTimeout(() => {
-					setErrorMessage(null)
-				}, 5000)
-			})
-			.catch(error => {
-				setNewName('')
-				setNewNumber('')
-				setErrorMessage(error.response.data.error)
-				setTimeout(() => {
-					setErrorMessage(null)
-				}, 5000)
-			})
 	}
 
 	return (
@@ -84,7 +83,7 @@ const PersonForm = ({ newName, newNumber, setNewName, setNewNumber, persons, set
 					name: <input onChange={handleChangeName} value={newName} />
 				</div>
 				<div>
-					number: <input type='number' onChange={handleChangeNumber} value={newNumber} />
+					number: <input onChange={handleChangeNumber} value={newNumber} />
 				</div>
 				<div>
 					<button type='submit'>add</button>
