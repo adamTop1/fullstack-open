@@ -3,8 +3,8 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
-const Person = require('./models/person')
-const e = require('express')
+const Person = require('./models/Person')
+
 
 const PORT = process.env.PORT
 
