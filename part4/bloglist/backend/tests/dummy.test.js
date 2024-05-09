@@ -98,3 +98,12 @@ describe('most blogs', () => {
 		assert.strictEqual(result, expected)
 	})
 })
+
+describe('most likes', () => {
+  test('author with most likes', () => {
+    const result = listHelper.mostLikes(blogs)
+    const expected = 12
+
+    assert.strictEqual(result, expected)
+  })
+})
