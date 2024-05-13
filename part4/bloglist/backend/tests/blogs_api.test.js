@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const assert = require('node:assert')
+const { title } = require('node:process')
 
 const api = supertest(app)
 
@@ -26,6 +27,7 @@ test('create a new blog', async () => {
     const initialBlogsLength = blogs.body.length
 
 	const newBlog = {
+        title: 'test',
 		author: 'tester',
 		url: 'https://reactpatterns.com/',
 		likes: 3,
@@ -41,6 +43,17 @@ test('create a new blog', async () => {
     const blogsLength = blogsAtEnd.body.length
 
     assert.strictEqual(blogsLength, initialBlogsLength + 1)
+})
+
+test('likes property defaults to 0', async () => {
+    const newBlog = {
+        title: 'test likes',
+		author: 'tester likes',
+		url: 'https://reactpatterns.com/',
+	}
+
+    const response = await api.post('/api/blogs').send(newBlog)
+    assert.strictEqual(response.body.likes, 0)
 })
 
 after(async () => {
