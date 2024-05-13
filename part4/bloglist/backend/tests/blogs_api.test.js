@@ -56,6 +56,19 @@ test('likes property defaults to 0', async () => {
     assert.strictEqual(response.body.likes, 0)
 })
 
+test('title and url properties are required', async () => {
+    const newBlog = {
+		author: 'tester likes',
+		url: 'https://reactpatterns.com/',
+	}
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+
+})
+
 after(async () => {
 	await mongoose.connection.close()
 })
