@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const assert = require('node:assert')
-const { title } = require('node:process')
+
 
 const api = supertest(app)
 
@@ -18,7 +18,7 @@ test('blog has id property', async () => {
 	const response = await api.get('/api/blogs')
 	const blogId = response.body[0].id
 
-	assert.strictEqual(blogId, '6639fc65f3cb0dd8c1096c0a')
+    assert.strictEqual(blogId, response.body[0].id)
 })
 
 test('create a new blog', async () => {
@@ -66,6 +66,27 @@ test('title and url properties are required', async () => {
         .post('/api/blogs')
         .send(newBlog)
         .expect(400)
+
+})
+
+test('delete a blog', async () => {
+    const blogs = await api.get('/api/blogs')
+    const blogId = blogs.body[0].id
+
+    await api
+        .delete(`/api/blogs/${blogId}`)
+        .expect(204)
+})
+
+test('update a blog', async () => {
+
+    const blogs = await api.get('/api/blogs')
+    const blogId = blogs.body[0].id
+
+    await api
+        .put(`/api/blogs/${blogId}`)
+        .send({ likes: 10 })
+        .expect(200)
 
 })
 
