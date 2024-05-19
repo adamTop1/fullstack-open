@@ -8,11 +8,13 @@ const { MONGODB_URI } = require('./utils/config')
 const errorHandler = require('./utils/errorHandler')
 const loginRouter = require('./controllers/login')
 require('express-async-errors')
+const tokenExtract = require('./utils/tokenExtract')
 
 mongoose.connect(MONGODB_URI)
 
 app.use(cors())
 app.use(express.json())
+app.use(tokenExtract)
 
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', userRouter)
