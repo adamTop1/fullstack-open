@@ -1,38 +1,52 @@
 const blogsRouter = require('express').Router()
+const { verify } = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+getTokenFrom = req => {
+	const authorization = req.get('authorization')
+	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+		return authorization.substring(7)
+	}
+	return null
+}
 
 blogsRouter.get('/', async (req, res) => {
 	const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
 	res.json(blogs).status(200)
 })
 
-blogsRouter.post('/', async (req, res) => {
-	const { userId, title, author, url, likes } = req.body
+blogsRouter.post('/', async (req, res, next) => {
+	const { title, author, url, likes } = req.body
 
-	const user = await User.findById(userId)
+	try {
+		const token = getTokenFrom(req)
+		const verifiedToken = verify(token, process.env.SECRET)
+		const user = await User.findById(verifiedToken.id)
 
-	if (!title || !url) {
-		return res.status(400).json({ error: 'title or url missing' })
+		if (!title || !url) {
+			return res.status(400).json({ error: 'title or url missing' })
+		}
+		if (!likes) {
+			likes = 0
+		}
+
+		const blog = new Blog({
+			url,
+			title,
+			author,
+			user,
+			likes,
+		})
+
+		await blog.save()
+		user.blogs = user.blogs.concat(blog)
+		await user.save()
+
+		res.status(201).json(blog)
+	} catch (error) {
+		next(error)
 	}
-
-	if (!likes) {
-		likes = 0
-	}
-
-	const blog = new Blog({
-		url,
-		title,
-		author,
-		user,
-		likes,
-	})
-
-	await blog.save()
-	user.blogs = user.blogs.concat(blog)
-	await user.save()
-
-	res.status(201).json(blog)
 })
 
 blogsRouter.delete('/:id', async (req, res) => {
