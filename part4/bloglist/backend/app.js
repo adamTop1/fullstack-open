@@ -9,6 +9,7 @@ const errorHandler = require('./utils/errorHandler')
 const loginRouter = require('./controllers/login')
 require('express-async-errors')
 const tokenExtract = require('./utils/tokenExtract')
+const userExtract = require('./utils/userExtract')
 
 mongoose.connect(MONGODB_URI)
 
@@ -16,7 +17,7 @@ app.use(cors())
 app.use(express.json())
 app.use(tokenExtract)
 
-app.use('/api/blogs', blogRouter)
+app.use('/api/blogs', userExtract, blogRouter)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
 
