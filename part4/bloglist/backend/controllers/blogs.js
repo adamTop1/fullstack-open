@@ -18,16 +18,14 @@ blogsRouter.post('/', async (req, res) => {
 	if (!title || !url) {
 		return res.status(400).json({ error: 'title or url missing' })
 	}
-	if (!likes) {
-		likes = 0
-	}
+	const checkedLikes = likes ? likes : 0
 
 	const blog = new Blog({
 		url,
 		title,
 		author,
 		user,
-		likes,
+		likes: checkedLikes,
 	})
 
 	await blog.save()
