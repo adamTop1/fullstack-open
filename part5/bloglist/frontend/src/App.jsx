@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import AfterLogin from './components/AfterLogin'
+import Togglable from './components/Toggable'
 import './index.css'
 
 const App = () => {
@@ -39,7 +40,11 @@ const App = () => {
 			) : (
 				<AfterLogin setUser={setUser} setBlogs={setBlogs} user={user} />
 			)}
-			{user !== null && <NewBlogForm setBlogs={setBlogs} blogs={blogs} setMessage={setMessage} />}
+			{user !== null && (
+				<Togglable buttonLabel='new blog'>
+					<NewBlogForm setMessage={setMessage} blogs={blogs} setBlogs={setBlogs} />
+				</Togglable>
+			)}
 			{blogs.map(blog => (
 				<Blog key={blog.id} blog={blog} />
 			))}
