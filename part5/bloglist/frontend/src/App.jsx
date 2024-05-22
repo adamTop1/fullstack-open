@@ -38,12 +38,12 @@ const App = () => {
 			{user === null ? (
 				<LoginForm setUser={setUser} setMessage={setMessage} setBlogs={setBlogs} />
 			) : (
-				<AfterLogin setUser={setUser} setBlogs={setBlogs} user={user} />
-			)}
-			{user !== null && (
-				<Togglable buttonLabel='new blog'>
-					<NewBlogForm setMessage={setMessage} blogs={blogs} setBlogs={setBlogs} />
-				</Togglable>
+				<>
+					<AfterLogin setUser={setUser} setBlogs={setBlogs} user={user} />
+					<Togglable buttonLabel='new blog'>
+						<NewBlogForm setMessage={setMessage} blogs={blogs} setBlogs={setBlogs} />
+					</Togglable>
+				</>
 			)}
 			{blogs.map(blog => (
 				<Blog key={blog.id} blog={blog} />

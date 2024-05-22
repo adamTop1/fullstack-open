@@ -22,15 +22,15 @@ const NewBlogForm = ({ setBlogs, blogs, setMessage }) => {
 			setAuthor('')
 			setUrl('')
 
-            setMessage(`Successfully added a new blog ${newBlog.title} by ${newBlog.author}`)
-            setTimeout(() => {
-                setMessage(null)
-            }, 5000)
+			setMessage(`Successfully added a new blog ${newBlog.title} by ${newBlog.author}`)
+			setTimeout(() => {
+				setMessage(null)
+			}, 5000)
 		} catch (err) {
 			setMessage(err.response.data.error)
-            setTimeout(() => {
-                setMessage(null)
-            }, 5000)
+			setTimeout(() => {
+				setMessage(null)
+			}, 5000)
 		}
 	}
 
