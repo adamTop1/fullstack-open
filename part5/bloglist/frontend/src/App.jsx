@@ -31,6 +31,8 @@ const App = () => {
 		fetchData()
 	}, [])
 
+	const sortedBlogs = blogs.sort((blog1, blog2) => blog2.likes - blog1.likes)
+
 	return (
 		<div>
 			<h2>blogs</h2>
@@ -45,7 +47,7 @@ const App = () => {
 					</Togglable>
 				</>
 			)}
-			{blogs.map(blog => (
+			{sortedBlogs.map(blog => (
 				<Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
 			))}
 		</div>
