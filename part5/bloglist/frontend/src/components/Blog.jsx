@@ -2,7 +2,6 @@ import Togglable from './Toggable'
 import blogService from '../services/blogs'
 
 const Blog = ({ blog, setBlogs }) => {
-
 	const likeBlog = () => {
 		blogService.update(blog.id, {
 			likes: blog.likes + 1,
@@ -21,8 +20,8 @@ const Blog = ({ blog, setBlogs }) => {
 	return (
 		<div className='blog'>
 			<div className='blog-title'>title: {blog.title}</div>
+			<div className='blog-title'>author: {blog.author}</div>
 			<Togglable buttonLabel='show more info'>
-				<div>author: {blog.author}</div>
 				<div>url: {blog.url}</div>
 				<div>
 					likes :{blog.likes} <button onClick={likeBlog}>like</button>
