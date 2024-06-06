@@ -54,3 +54,24 @@ test('renders url and likes when show more info is clicked', async () => {
 	  const divLikes = screen.getByText('likes :10')
 	  expect(divLikes).toBeInTheDocument()
 })
+
+test('clicking the like button twice calls the event handler twice', async () => {
+	const blog = {
+		title: 'testing bloglist app',
+		author: 'Mikko',
+		url: 'https://www.example.com',
+		likes: 10,
+		user: {
+		  username: 'mikko',
+		},
+	  }
+	
+	 render(<Blog blog={blog} />)
+
+	 const user = userEvent.setup()
+	 const button = screen.getByText('show more info')
+	 await user.click(button)
+
+	 const likeButton = screen.getByText('like')
+	  screen.debug(likeButton)
+})
