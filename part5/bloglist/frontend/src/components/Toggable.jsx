@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 const Togglable = (props) => {
   const [visible, setVisible] = useState(false)
 
-  const hideWhenVisible = { display: visible ? 'none' : 'inline-block' }
-  const showWhenVisible = { display: visible ? 'inline-block' : 'none' }
+  const hideWhenVisible = { display: visible ? 'none' : 'block' }
+  const showWhenVisible = { display: visible ? 'block' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -16,7 +16,7 @@ const Togglable = (props) => {
       <div style={hideWhenVisible}>
         <button onClick={toggleVisibility}>{props.buttonLabel}</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="togglableContent">
         {props.children}
         <button onClick={toggleVisibility}>cancel</button>
       </div>
