@@ -36,6 +36,7 @@ const App = () => {
 
   return (
     <div>
+      <h2>Rating</h2>
       <button onClick={good}>good</button> 
       <button onClick={ok}>ok</button> 
       <button onClick={bad}>bad</button>
