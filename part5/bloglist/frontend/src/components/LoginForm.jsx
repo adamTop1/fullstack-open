@@ -12,17 +12,21 @@ const LoginForm = ({ setUser, setMessage, setBlogs }) => {
 		try {
 			const user = await loginService.login({ username, password })
 			setUser(user)
+
 			window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+			blogService.setToken(user.token)
+			
 			setUsername('')
 			setPassword('')
+			
+			const blogs = await blogService.getAll()
+			setBlogs(blogs)
 
 			setMessage('Successfully logged in')
 			setTimeout(() => {
 				setMessage(null)
 			}, 5000)
 
-			const blogs = await blogService.getAll()
-			setBlogs(blogs)
 		} catch (err) {
 			setMessage('Wrong username or password')
 			setTimeout(() => {
