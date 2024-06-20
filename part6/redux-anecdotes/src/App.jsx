@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { addAnecdote } from './reducers/anecdoteReducer'
+import { addAnecdote, addVote } from './reducers/anecdoteReducer'
 import { useRef } from 'react'
 
 const App = () => {
@@ -8,10 +8,7 @@ const App = () => {
 	const anecdoteInput = useRef()
 
 	const vote = id => {
-    dispatch({
-      type: 'VOTE',
-			data: { id },
-		})
+    dispatch(addVote(id))
 	}
   
 	const addNewAnecode = e => {
