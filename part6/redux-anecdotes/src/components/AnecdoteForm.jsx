@@ -1,5 +1,5 @@
 import React from 'react'
-import { addAnecdote } from '../reducers/anecdoteReducer'
+import { addAnecdote } from '../feature/anecdoteSlice'
 import { useDispatch } from 'react-redux'
 import { useRef } from 'react'
 
